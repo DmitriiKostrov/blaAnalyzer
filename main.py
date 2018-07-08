@@ -4,8 +4,10 @@ import json
 import sqlite3
 import datetime
 import time
+import os
 
 API_URL = 'https://public-api.blablacar.com/api/v2/trips'
+DB_PATH = os.path.join(os.path.dirname(__file__), 'bla.db')
 
 def getTripsData(apiKey, fromName, toName, dateBegin = None):
 	headers = {'accept': 'application/json', 'key': apiKey}	
@@ -25,7 +27,7 @@ def getTripsData(apiKey, fromName, toName, dateBegin = None):
 	return data["trips"]
 
 def storeDataToSql(trips):
-	conn = sqlite3.connect('bla.db')
+	conn = sqlite3.connect(DB_PATH)
 	c = conn.cursor()
 # trip_id text, modify_date integer, total_seats integer, seats_left integer, departure_date integer, price real
 	for trip in trips:
