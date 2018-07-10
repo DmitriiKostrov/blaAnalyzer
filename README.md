@@ -8,6 +8,6 @@ main.py should be set on cron to store route data
 
 usage:
 
-```
-python main.py -d [Y-m-d] blablaCarApiKey fromCity toCiti 
+```bash
+python main.py -d [Y-m-d] blablaCarApiKey fromCity toCity 
 ```
