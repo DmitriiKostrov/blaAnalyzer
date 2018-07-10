@@ -26,13 +26,13 @@ def getTripsData(apiKey, fromName, toName, dateBegin = None):
 
 	return data["trips"]
 
-def storeDataToSql(trips):
+def storeDataToSql(cityFrom, cityTo, trips):
 	conn = sqlite3.connect(DB_PATH)
 	c = conn.cursor()
-# trip_id text, modify_date integer, total_seats integer, seats_left integer, departure_date integer, price real
+# search_city_from text, search_city_to text, trip_id text, modify_date integer, total_seats integer, seats_left integer, departure_date integer, price real
 	for trip in trips:
 		departureDate = int(time.mktime(datetime.datetime.strptime(trip["departure_date"], "%d/%m/%Y %H:%M:%S").timetuple()))
-		data = (trip["permanent_id"], int(time.time()), trip["seats"], trip["seats_left"], departureDate, trip["price"]["value"])
+		data = (cityFrom, cityTo, trip["permanent_id"], int(time.time()), trip["seats"], trip["seats_left"], departureDate, trip["price"]["value"])
   		c.execute('insert into trips values (?,?,?,?,?,?)', data)
 
 	conn.commit()
@@ -62,6 +62,6 @@ def main(argv):
 		if opt == '-d':
 			dateBegin = arg
 	tripsData = getTripsData(apiKey, fromName, toName, dateBegin)	
-	storeDataToSql(tripsData)
+	storeDataToSql(tripsData, fromName, toName)
 	print 'added %d entries' % len(tripsData)
 main(sys.argv[1:])
