@@ -5,6 +5,7 @@ INNER JOIN (
 		FROM trips
 	GROUP BY trip_id
 	HAVING departure_date < strftime('%s', 'now')
+		AND search_city_from = Berlin AND search_city_to = Leipzig
 ) t2
 ON t.modify_date = t2.latest AND t.trip_id = t2.trip_id
 ORDER BY departure_date DESC
