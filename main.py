@@ -33,7 +33,7 @@ def storeDataToSql(cityFrom, cityTo, trips):
 	for trip in trips:
 		departureDate = int(time.mktime(datetime.datetime.strptime(trip["departure_date"], "%d/%m/%Y %H:%M:%S").timetuple()))
 		data = (cityFrom, cityTo, trip["permanent_id"], int(time.time()), trip["seats"], trip["seats_left"], departureDate, trip["price"]["value"])
-  		c.execute('insert into trips values (?,?,?,?,?,?)', data)
+  		c.execute('insert into trips values (?,?,?,?,?,?,?,?)', data)
 
 	conn.commit()
 	conn.close()
@@ -62,6 +62,6 @@ def main(argv):
 		if opt == '-d':
 			dateBegin = arg
 	tripsData = getTripsData(apiKey, fromName, toName, dateBegin)	
-	storeDataToSql(tripsData, fromName, toName)
-	print 'added %d entries' % len(tripsData)
+	storeDataToSql(fromName, toName, tripsData)
+	print time.strftime("%Y-%m-%d %H:%M:%S -"), 'added %d entries' % len(tripsData), 'from %s to %s' % (fromName, toName)
 main(sys.argv[1:])
